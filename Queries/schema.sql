@@ -54,4 +54,3 @@ CREATE TABLE dept_emp(
     PRIMARY KEY (emp_no,dept_no)
 );
 
-SELECT * FROM departments;
