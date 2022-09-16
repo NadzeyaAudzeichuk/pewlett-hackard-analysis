@@ -15,7 +15,7 @@ SELECT DISTINCT ON (emp_no) emp_no,
 	first_name,
 	last_name,
 	title
-INTO unique_titles
+INTO retirement_unique_titles
 FROM retirement_titles
 WHERE to_date='9999-01-01'
 ORDER BY emp_no, to_date DESC;
@@ -40,3 +40,27 @@ FROM employees as e
 WHERE de.to_date='9999-01-01' AND 
 	(e.birth_date BETWEEN '1965-01-01' AND '1965-12-31' )
 ORDER BY emp_no;
+
+-- Employees who are eligible to participate in a mentorship program including born in 1964
+SELECT DISTINCT ON (e.emp_no) e.emp_no, e.first_name, e.last_name, e.birth_date,
+	de.from_date, de.to_date,
+	d.dept_name,t.title
+INTO DEPT_TITLE_MENTOR
+FROM employees as e
+	INNER JOIN dept_emp as de
+	ON e.emp_no=de.emp_no
+	INNER JOIN departments as d
+	ON de.dept_no=d.dept_no
+	INNER JOIN titles as t
+	ON e.emp_no=t.emp_no
+WHERE de.to_date='9999-01-01' AND 
+	(e.birth_date BETWEEN '1964-01-01' AND '1965-12-31' )
+ORDER BY emp_no;
+
+SELECT dept_name, count(emp_no) 
+FROM DEPT_TITLE_MENTOR
+group by dept_name
+order by count(emp_no) desc;
+
+
+
